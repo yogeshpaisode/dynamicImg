@@ -42,8 +42,6 @@ and open the template in the editor.
             <br>
             <button ng-click="triggerFileBox();">select File</button>
             <button ng-click="addImg(f);">Add Img</button>
-            <br>
-            <button ng-click="update(f);">Update</button>
             <hr>
         </div>
 
@@ -101,10 +99,6 @@ and open the template in the editor.
                                         }, function errorCallback(response) {
                                             obj.uploadStatus = "Error while Uploading..." + imgIndex;
                                         });
-                                    }
-
-                                    $scope.update = function (obj) {
-                                        $scope.form = obj;
                                     }
 
                                     $scope.deleteImg = function (index, list) {
