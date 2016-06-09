@@ -21,7 +21,7 @@ and open the template in the editor.
             Hex: <input type="text" value="" ng-model="form.hex"/>
             <br>
             <div ng-repeat="img in form.images">
-                {{img}}
+               <img src="{{img.path}}" style="width: 50px;height: 50px;"/>{{img.uploadStatus}}
             </div>
             <input type="file" file-model="myFile" multiple=""/>
             <button ng-click="addImg();">Add Img</button>
@@ -35,7 +35,7 @@ and open the template in the editor.
             <br>
             Hex: <input type="text" value="{{f.hex}}" ng-model="f.hex"/>
             <br>
-            {{f.images}}
+            <img src="{{img.path}}" ng-repeat="img in f.images" style="width: 50px;height: 50px;"/>
         </div>
 
 
@@ -57,6 +57,7 @@ and open the template in the editor.
                                     };
                                 }])
                             .controller("indexCtr", ["$scope", "$http", function ($scope, $http) {
+                                    var url="http://upchar.esy.es/img/";
                                     $scope.formList = [];
                                     $scope.form = {};
                                     var imgIndex = 0;
@@ -70,7 +71,7 @@ and open the template in the editor.
                                     }
                                     $scope.addImg = function () {
                                         imgIndex++;
-                                        var obj = {name: $scope.myFile.name, uploadStatus: "Preparing.."};
+                                        var obj = {name: $scope.myFile.name, uploadStatus: "Preparing..",path:""};
                                         var fileObj = $scope.myFile;
                                         $scope.form.images.push(obj);
                                         uploadFile(obj, fileObj);
@@ -87,6 +88,7 @@ and open the template in the editor.
                                             data: fd
                                         }).then(function successCallback(response) {
                                             obj.uploadStatus = "Uploaded Successfully..." + imgIndex;
+                                            obj.path=url+obj.name;
                                         }, function errorCallback(response) {
                                             obj.uploadStatus = "Error while Uploading..." + imgIndex;
                                         });
