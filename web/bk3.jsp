@@ -31,7 +31,7 @@ and open the template in the editor.
         </div>
         <br><br>
 
-        <div ng-repeat="f in colorList">
+        <div ng-repeat="f in formList">
             Color: <input type="text" value="{{f.color}}" ng-model="f.color"/>
             <br>
             Hex: <input type="text" value="{{f.hex}}" ng-model="f.hex"/>
@@ -45,17 +45,17 @@ and open the template in the editor.
             <hr>
         </div>
 
-        <div ng-repeat="s in size">
+        <div ng-repeat="s in form.size">
             {{s.type}}..<input type="checkbox" ng-model="s.isSelected"><br>
-            <div ng-repeat="f in colorList" ng-if="s.isSelected">
-                {{s.stock[$index].color = f.color}}
+            <div ng-repeat="f in formList">
+                {{s.stock[$index].color=f.color}}
                 <img src="{{f.images[0].path}}" style="width: 50px;height: 50px;"/>..<input type="text" ng-model="s.stock[$index].count">
             </div>
         </div>
 
+        <br><br>
+        {{form.size}}
 
-        <button ng-click="pushAll();">Push all</button>
-        {{mainForm}}
         <script>
                     angular.module("myGIIS", [])
                             .directive('fileModel', ['$parse', function ($parse) {
@@ -75,15 +75,13 @@ and open the template in the editor.
                                 }])
                             .controller("indexCtr", ["$scope", "$http", function ($scope, $http) {
                                     var url = "http://upchar.esy.es/img/";
-
-                                    $scope.colorList = [];
-                                    $scope.size = [{type: "Small", stock: [], isSelected: false}, {type: "Medium", stock: [], isSelected: false}, {type: "Large", stock: [], isSelected: false}];
-                                    $scope.form = {images: []};
+                                    $scope.formList = [];
+                                    $scope.form = {images: [], size: [{type: "Small", stock: [], isSelected: false}, {type: "Medium", stock: [], isSelected: false}, {type: "Large", stock: [], isSelected: false}]};
                                     var imgIndex = 0;
 
                                     $scope.add = function () {
-                                        $scope.colorList.push($scope.form);
-                                        $scope.form = {images: []};
+                                        $scope.formList.push($scope.form);
+                                        $scope.form = {images: [], size: [{type: "Small", stock: [], isSelected: false}, {type: "Medium", stock: [], isSelected: false}, {type: "Large", stock: [], isSelected: false}]};
                                         imgIndex = 0;
                                     }
                                     $scope.addImg = function (formObj) {
@@ -118,9 +116,7 @@ and open the template in the editor.
                                     $scope.triggerFileBox = function () {
                                         $("#file").click();
                                     }
-                                    $scope.pushAll = function () {
-                                        $scope.mainForm = [{"color": $scope.colorList}, {"sizeList": $scope.size}];
-                                    }
+
                                 }]);
         </script>
 
