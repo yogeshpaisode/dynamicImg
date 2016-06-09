@@ -45,6 +45,16 @@ and open the template in the editor.
             <hr>
         </div>
 
+        <div ng-repeat="s in form.size">
+            {{s.type}}..<input type="checkbox" ng-model="s.isSelected"><br>
+            <div ng-repeat="f in formList">
+                {{s.stock[$index].color=f.color}}
+                <img src="{{f.images[0].path}}" style="width: 50px;height: 50px;"/>..<input type="text" ng-model="s.stock[$index].count">
+            </div>
+        </div>
+
+        <br><br>
+        {{form.size}}
 
         <script>
                     angular.module("myGIIS", [])
@@ -66,15 +76,13 @@ and open the template in the editor.
                             .controller("indexCtr", ["$scope", "$http", function ($scope, $http) {
                                     var url = "http://upchar.esy.es/img/";
                                     $scope.formList = [];
-                                    $scope.form = {};
+                                    $scope.form = {images: [], size: [{type: "Small", stock: [], isSelected: false}, {type: "Medium", stock: [], isSelected: false}, {type: "Large", stock: [], isSelected: false}]};
                                     var imgIndex = 0;
-                                    $scope.form.images = [];
 
                                     $scope.add = function () {
                                         $scope.formList.push($scope.form);
-                                        $scope.form = {};
+                                        $scope.form = {images: [], size: [{type: "Small", stock: [], isSelected: false}, {type: "Medium", stock: [], isSelected: false}, {type: "Large", stock: [], isSelected: false}]};
                                         imgIndex = 0;
-                                        $scope.form.images = [];
                                     }
                                     $scope.addImg = function (formObj) {
                                         imgIndex++;
@@ -104,8 +112,8 @@ and open the template in the editor.
                                     $scope.deleteImg = function (index, list) {
                                         list.splice(index, 1);
                                     }
-                                    
-                                    $scope.triggerFileBox=function (){
+
+                                    $scope.triggerFileBox = function () {
                                         $("#file").click();
                                     }
 
