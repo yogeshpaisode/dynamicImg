@@ -21,10 +21,11 @@ and open the template in the editor.
             Hex: <input type="text" value="" ng-model="form.hex"/>
             <br>
             <div ng-repeat="img in form.images">
-               <img src="{{img.path}}" style="width: 50px;height: 50px;"/>{{img.uploadStatus}}
+                <img src="{{img.path}}" style="width: 50px;height: 50px;"/>{{img.uploadStatus}}....<button ng-click="deleteImg($index, form.images);">Delete</button>
             </div>
-            <input type="file" file-model="myFile" multiple=""/>
-            <button ng-click="addImg();">Add Img</button>
+            <br>
+            <input type="file" file-model="myFile" multiple="" id="file"/>
+            <button ng-click="addImg(form);">Add Img</button>
             <br><br>
             <button ng-click="add();">Add</button>
         </div>
@@ -35,7 +36,15 @@ and open the template in the editor.
             <br>
             Hex: <input type="text" value="{{f.hex}}" ng-model="f.hex"/>
             <br>
-            <img src="{{img.path}}" ng-repeat="img in f.images" style="width: 50px;height: 50px;"/>
+            <div ng-repeat="img in f.images">
+                <img src="{{img.path}}" style="width: 50px;height: 50px;"/>..<button ng-click="deleteImg($index, f.images);">Delete</button>
+            </div>
+            <br>
+            <button ng-click="triggerFileBox();">select File</button>
+            <button ng-click="addImg(f);">Add Img</button>
+            <br>
+            <button ng-click="update(f);">Update</button>
+            <hr>
         </div>
 
 
@@ -57,7 +66,7 @@ and open the template in the editor.
                                     };
                                 }])
                             .controller("indexCtr", ["$scope", "$http", function ($scope, $http) {
-                                    var url="http://upchar.esy.es/img/";
+                                    var url = "http://upchar.esy.es/img/";
                                     $scope.formList = [];
                                     $scope.form = {};
                                     var imgIndex = 0;
@@ -69,18 +78,18 @@ and open the template in the editor.
                                         imgIndex = 0;
                                         $scope.form.images = [];
                                     }
-                                    $scope.addImg = function () {
+                                    $scope.addImg = function (formObj) {
                                         imgIndex++;
-                                        var obj = {name: $scope.myFile.name, uploadStatus: "Preparing..",path:""};
+                                        var obj = {name: $scope.myFile.name, uploadStatus: "Preparing..", path: ""};
                                         var fileObj = $scope.myFile;
-                                        $scope.form.images.push(obj);
+                                        formObj.images.push(obj);
                                         uploadFile(obj, fileObj);
                                     }
                                     var uploadFile = function (obj, fileObj) {
                                         obj.uploadStatus = "Uploading..." + imgIndex;
                                         var fd = new FormData();
                                         fd.append('image', fileObj);
-                                        
+
                                         $http({
                                             method: 'POST',
                                             url: "http://upchar.esy.es/upload.php",
@@ -88,11 +97,24 @@ and open the template in the editor.
                                             data: fd
                                         }).then(function successCallback(response) {
                                             obj.uploadStatus = "Uploaded Successfully..." + imgIndex;
-                                            obj.path=url+obj.name;
+                                            obj.path = url + obj.name;
                                         }, function errorCallback(response) {
                                             obj.uploadStatus = "Error while Uploading..." + imgIndex;
                                         });
                                     }
+
+                                    $scope.update = function (obj) {
+                                        $scope.form = obj;
+                                    }
+
+                                    $scope.deleteImg = function (index, list) {
+                                        list.splice(index, 1);
+                                    }
+                                    
+                                    $scope.triggerFileBox=function (){
+                                        $("#file").click();
+                                    }
+
                                 }]);
         </script>
 
