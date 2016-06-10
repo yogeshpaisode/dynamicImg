@@ -9,24 +9,23 @@
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
 
-        </head>
-        <body ng-app="myGIIS" ng-cloak>
-            <div ng-controller="DemoCtrl as ctrl" layout="column" ng-cloak>
-                <md-content layout-padding layout="column">
-                    <form ng-submit="$event.preventDefault()">
-                        <md-autocomplete
-                            ng-disabled="ctrl.isDisabled"
-                            md-no-cache="ctrl.noCache"
-                            md-selected-item="ctrl.selectedItem"
-                            md-search-text="ctrl.searchText"
-                            md-items="item in ctrl.querySearch(ctrl.searchText)"
-                            md-item-text="item.name"
-                            md-min-length="0"
-                            placeholder="Pick an Angular repository"
-                            md-menu-class="autocomplete-custom-template">
-                            <md-item-template>
-                                <span class="item-title">
-                                <md-icon md-svg-icon="img/icons/octicon-repo.svg"></md-icon>
+    </head>
+    <body ng-app="myGIIS" ng-cloak>
+        <div ng-controller="DemoCtrl as ctrl" layout="column" ng-cloak>
+            <md-content layout-padding layout="column">
+                <form ng-submit="$event.preventDefault()">
+                    <md-autocomplete
+                        ng-disabled="ctrl.isDisabled"
+                        md-no-cache="ctrl.noCache"
+                        md-selected-item="ctrl.selectedItem"
+                        md-search-text="ctrl.searchText"
+                        md-items="item in ctrl.querySearch(ctrl.searchText)"
+                        md-item-text="item.name"
+                        md-min-length="0"
+                        placeholder="Pick an Angular repository"
+                        md-menu-class="autocomplete-custom-template">
+                        <md-item-template>
+                            <span class="item-title">
                                 <span>{{item.name}}</span>
                             </span>
                         </md-item-template>
@@ -38,18 +37,17 @@
         <script type="text/javascript">
             (function () {
                 'use strict';
-                angular
-                        .module('myGIIS', ['ngMaterial'])
+                angular.module('myGIIS', ['ngMaterial'])
                         .controller('DemoCtrl', DemoCtrl);
-                function DemoCtrl($timeout, $q, $log) {
+                function DemoCtrl($log) {
                     var self = this;
                     self.simulateQuery = false;
                     self.isDisabled = false;
                     self.repos = loadAll();
                     self.querySearch = querySearch;
-                  
+
                     function querySearch(query) {
-                        $log.info('Query: ' + query);
+                        //$log.info('Query: ' + query);
                         var results = [];
                         for (var i = 0; i < self.repos.length; i++) {
                             if (self.repos[i].name.includes(query)) {
@@ -58,9 +56,33 @@
                         }
                         return results;
                     }
-                   //Function to Load all repos
+                    //Function to Load all repos
                     function loadAll() {
                         var repos = [
+                            {
+                                'name': 'one,two,three'
+                            },
+                            {
+                                'name': 'four,one,five'
+                            },
+                            {
+                                'name': 'nine,eight,six'
+                            },
+                            {
+                                'name': 'two,eight,seven'
+                            },
+                            {
+                                'name': 'one,two,three'
+                            },
+                            {
+                                'name': 'four,one,five'
+                            },
+                            {
+                                'name': 'nine,eight,six'
+                            },
+                            {
+                                'name': 'two,eight,seven'
+                            },
                             {
                                 'name': 'one,two,three'
                             },
@@ -79,7 +101,7 @@
                             return repo;
                         });
                     }
-                  
+
                 }
             })();
         </script>
